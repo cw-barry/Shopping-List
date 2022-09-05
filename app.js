@@ -11,19 +11,11 @@ const clearBtn = document.querySelector('.clear-btn');
 let editElement;
 let editFlag = false;
 let editID = '';
-// ****** event listeners **********
-
-// submit form
-form.addEventListener('submit', addItem);
-// clear list
-clearBtn.addEventListener('click', clearItems);
-// display items onload
-window.addEventListener('DOMContentLoaded', setupItems);
 
 // ****** functions **********
 
 // add item
-function addItem(e) {
+const addItem = (e) => {
   e.preventDefault();
   const value = shopping.value;
   const id = new Date().getTime().toString();
@@ -72,9 +64,9 @@ function addItem(e) {
   } else {
     displayAlert('please enter value', 'danger');
   }
-}
+};
 // display alert
-function displayAlert(text, action) {
+const displayAlert = (text, action) => {
   alert.textContent = text;
   alert.classList.add(`alert-${action}`);
   // remove alert
@@ -82,10 +74,10 @@ function displayAlert(text, action) {
     alert.textContent = '';
     alert.classList.remove(`alert-${action}`);
   }, 1000);
-}
+};
 
 // clear items
-function clearItems() {
+const clearItems = () => {
   const items = document.querySelectorAll('.shopping-item');
   if (items.length > 0) {
     items.forEach(function (item) {
@@ -96,11 +88,11 @@ function clearItems() {
   displayAlert('empty list', 'danger');
   setBackToDefault();
   localStorage.removeItem('list');
-}
+};
 
 // delete item
 
-function deleteItem(e) {
+const deleteItem = (e) => {
   const element = e.currentTarget.parentElement.parentElement;
   const id = element.dataset.id;
 
@@ -114,9 +106,9 @@ function deleteItem(e) {
   setBackToDefault();
   // remove from local storage
   removeFromLocalStorage(id);
-}
+};
 // edit item
-function editItem(e) {
+const editItem = (e) => {
   const element = e.currentTarget.parentElement.parentElement;
   // set edit item
   editElement = e.currentTarget.parentElement.previousElementSibling;
@@ -126,32 +118,32 @@ function editItem(e) {
   editID = element.dataset.id;
   //
   submitBtn.textContent = 'edit';
-}
+};
 // set backt to defaults
-function setBackToDefault() {
+const setBackToDefault = () => {
   shopping.value = '';
   editFlag = false;
   editID = '';
   submitBtn.textContent = 'submit';
-}
+};
 
 // ****** local storage **********
 
 // add to local storage
-function addToLocalStorage(id, value) {
+const addToLocalStorage = (id, value) => {
   const shopping = { id, value };
   let items = getLocalStorage();
   items.push(shopping);
   localStorage.setItem('list', JSON.stringify(items));
-}
+};
 
-function getLocalStorage() {
+const getLocalStorage = () => {
   return localStorage.getItem('list')
     ? JSON.parse(localStorage.getItem('list'))
     : [];
-}
+};
 
-function removeFromLocalStorage(id) {
+const removeFromLocalStorage = (id) => {
   let items = getLocalStorage();
 
   items = items.filter(function (item) {
@@ -161,8 +153,9 @@ function removeFromLocalStorage(id) {
   });
 
   localStorage.setItem('list', JSON.stringify(items));
-}
-function editLocalStorage(id, value) {
+};
+
+const editLocalStorage = (id, value) => {
   let items = getLocalStorage();
 
   items = items.map(function (item) {
@@ -172,13 +165,13 @@ function editLocalStorage(id, value) {
     return item;
   });
   localStorage.setItem('list', JSON.stringify(items));
-}
+};
 
 // SETUP LOCALSTORAGE.REMOVEITEM('LIST');
 
 // ****** setup items **********
 
-function setupItems() {
+const setupItems = () => {
   let items = getLocalStorage();
 
   if (items.length > 0) {
@@ -187,9 +180,9 @@ function setupItems() {
     });
     container.classList.add('show-container');
   }
-}
+};
 
-function createListItem(id, value) {
+const createListItem = (id, value) => {
   const element = document.createElement('article');
   let attr = document.createAttribute('data-id');
   attr.value = id;
@@ -215,4 +208,13 @@ function createListItem(id, value) {
 
   // append child
   list.appendChild(element);
-}
+};
+
+// ****** event listeners **********
+
+// submit form
+form.addEventListener('submit', addItem);
+// clear list
+clearBtn.addEventListener('click', clearItems);
+// display items onload
+window.addEventListener('DOMContentLoaded', setupItems);
